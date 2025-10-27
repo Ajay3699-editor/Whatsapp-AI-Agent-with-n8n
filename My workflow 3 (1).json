@@ -1,0 +1,163 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        -128
+      ],
+      "id": "7929fb64-f1e9-435f-a430-d46b7507ce37",
+      "name": "WhatsApp Trigger",
+      "webhookId": "c8f85ffb-530a-4285-bbb8-79fb2309e109",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "8Im1nijUt9eWvsZE",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.messages[0].text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -208,
+        -128
+      ],
+      "id": "0c970d3d-8240-42a2-bbc9-acb41d7f774b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        80
+      ],
+      "id": "266bd0bc-1e2d-4074-8426-49ff532a3886",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "MF7WpBCATi5ub2Lr",
+          "name": "SerpAPI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "845427555317782",
+        "recipientPhoneNumber": "916300702645",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        -128
+      ],
+      "id": "8478dcf6-e16d-4c0b-b4d7-a0fd970a0360",
+      "name": "Send message",
+      "webhookId": "362c9cee-689c-462f-ad52-95d87bff7107",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "kY4a1TvWBvSV0JFK",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        80
+      ],
+      "id": "e6904c6c-503c-4741-92f9-13cae96a286f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "wB6h7wGeBR1hjuvR",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "591377e5-c5a0-4b24-8d8f-7412909f9c4a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b11f519e36b7839f12136f17f3edbe6981c983e408e715d8f747e00b740e7c64"
+  },
+  "id": "WSIhJfVovK4BaRcy",
+  "tags": []
+}
